@@ -7,7 +7,9 @@ using FluentMigrator.Runner.Processors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nop.Core;
 using Nop.Core.Infrastructure;
+using Nop.Data.DataProviders;
 using Nop.Data.Migrations;
 
 namespace Nop.Data
@@ -42,6 +44,30 @@ namespace Nop.Data
                     rb.WithVersionTable(new MigrationVersionInfo()).AddSqlServer().AddMySql5().AddPostgres()
                         // define the assembly containing the migrations
                         .ScanIn(mAssemblies).For.Migrations());
+
+            //data layer
+            services.AddTransient(serviceProvider =>
+            {
+                if ((Singleton<DataSettings>.Instance?.DataProvider ?? DataProviderType.Unknown) == DataProviderType.Unknown)
+                    Singleton<DataSettings>.Instance = new DataSettings { DataProvider = DataProviderType.SqlServer };
+
+                var dataProviderType = Singleton<DataSettings>.Instance.DataProvider; 
+
+                var dataProvider = dataProviderType switch
+                {
+                    DataProviderType.SqlServer => new MsSqlNopDataProvider() as INopDataProvider,
+                    DataProviderType.MySql => new MySqlNopDataProvider(),
+                    DataProviderType.PostgreSQL => new PostgreSqlDataProvider(),
+                    DataProviderType.Unknown => throw new NopException($"Not supported data provider name: '{dataProviderType}'"),
+                    _ => throw new NopException($"Not supported data provider name: '{dataProviderType}'")
+                };
+
+                var migrationManager = serviceProvider.GetService<IMigrationManager>();
+
+                dataProvider.Initialize(migrationManager);
+
+                return dataProvider;
+            });
         }
 
         /// <summary>

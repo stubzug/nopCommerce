@@ -10,8 +10,6 @@ using LinqToDB.Data;
 using LinqToDB.DataProvider;
 using LinqToDB.DataProvider.SqlServer;
 using Nop.Core;
-using Nop.Core.Infrastructure;
-using Nop.Data.Migrations;
 
 namespace Nop.Data.DataProviders
 {
@@ -157,15 +155,6 @@ namespace Nop.Data.DataProviders
             {
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Initialize database
-        /// </summary>
-        public void InitializeDatabase()
-        {
-            var migrationManager = EngineContext.Current.Resolve<IMigrationManager>();
-            migrationManager.ApplyUpMigrations(typeof(NopDbStartup).Assembly);
         }
 
         /// <summary>

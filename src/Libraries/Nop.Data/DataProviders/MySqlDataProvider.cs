@@ -12,8 +12,6 @@ using LinqToDB.DataProvider.MySql;
 using LinqToDB.SqlQuery;
 using MySql.Data.MySqlClient;
 using Nop.Core;
-using Nop.Core.Infrastructure;
-using Nop.Data.Migrations;
 
 namespace Nop.Data.DataProviders
 {
@@ -159,16 +157,7 @@ namespace Nop.Data.DataProviders
                 return false;
             }
         }
-
-        /// <summary>
-        /// Initialize database
-        /// </summary>
-        public void InitializeDatabase()
-        {
-            var migrationManager = EngineContext.Current.Resolve<IMigrationManager>();
-            migrationManager.ApplyUpMigrations(typeof(NopDbStartup).Assembly);
-        }
-
+        
         /// <summary>
         /// Get the current identity value
         /// </summary>

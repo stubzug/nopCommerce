@@ -218,7 +218,7 @@ namespace Nop.Web.Framework
             {
                 //check whether request is made by a background (schedule) task
                 if (_httpContextAccessor.HttpContext?.Request
-                    ?.Path.Equals(new PathString($"/{Services.Tasks.NopTaskDefaults.ScheduleTaskPath}"), StringComparison.InvariantCultureIgnoreCase)
+                    ?.Path.Equals(new PathString($"/{Services.ScheduleTasks.NopTaskDefaults.ScheduleTaskPath}"), StringComparison.InvariantCultureIgnoreCase)
                     ?? true)
                 {
                     //in this case return built-in customer record for background task

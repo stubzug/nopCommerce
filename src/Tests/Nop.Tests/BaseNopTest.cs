@@ -67,7 +67,7 @@ using Nop.Services.Shipping;
 using Nop.Services.Shipping.Date;
 using Nop.Services.Shipping.Pickup;
 using Nop.Services.Stores;
-using Nop.Services.Tasks;
+using Nop.Services.ScheduleTasks;
 using Nop.Services.Tax;
 using Nop.Services.Themes;
 using Nop.Services.Topics;

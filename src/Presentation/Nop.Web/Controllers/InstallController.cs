@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using LinqToDB.DataProvider;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -170,7 +171,12 @@ namespace Nop.Web.Controllers
 
             try
             {
-                var dataProvider = DataProviderManager.GetDataProvider(model.DataProvider);
+                Singleton<DataSettings>.Instance = new DataSettings
+                {
+                    DataProvider = model.DataProvider
+                };
+
+                var dataProvider = EngineContext.Current.Resolve<INopDataProvider>();
 
                 var connectionString = model.ConnectionStringRaw ? model.ConnectionString : dataProvider.BuildConnectionString(model);
 

@@ -95,6 +95,11 @@ namespace Nop.Tests
             migrationManager.ApplyUpMigrations(typeof(NopDbStartup).Assembly);
         }
 
+        public void Initialize(IMigrationManager migrationManager)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Inserts record into table. Returns inserted entity with identity
         /// </summary>
@@ -424,7 +429,7 @@ namespace Nop.Tests
                     return Singleton<MappingSchema>.Instance;
 
                 Singleton<MappingSchema>.Instance =
-                    new MappingSchema(ConfigurationName) { MetadataReader = new FluentMigratorMetadataReader() };
+                    new MappingSchema(ConfigurationName) { MetadataReader = new FluentMigratorMetadataReader(EngineContext.Current.Resolve<IMigrationManager>()) };
 
                 return Singleton<MappingSchema>.Instance;
             }

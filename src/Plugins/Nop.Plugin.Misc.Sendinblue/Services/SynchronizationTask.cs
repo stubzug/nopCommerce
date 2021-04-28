@@ -1,4 +1,4 @@
-﻿using Nop.Services.Tasks;
+﻿using Nop.Services.ScheduleTasks;
 using Task = System.Threading.Tasks.Task;
 
 namespace Nop.Plugin.Misc.Sendinblue.Services

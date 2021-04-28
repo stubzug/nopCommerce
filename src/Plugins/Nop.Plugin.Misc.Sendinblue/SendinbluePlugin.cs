@@ -10,7 +10,7 @@ using Nop.Services.Localization;
 using Nop.Services.Messages;
 using Nop.Services.Plugins;
 using Nop.Services.Stores;
-using Nop.Services.Tasks;
+using Nop.Services.ScheduleTasks;
 using Nop.Web.Framework.Infrastructure;
 using Task = System.Threading.Tasks.Task;
 

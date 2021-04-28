@@ -14,6 +14,7 @@ using Nop.Core;
 using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 using Nop.Data.Mapping;
+using Nop.Data.Migrations;
 using StackExchange.Profiling;
 using StackExchange.Profiling.Data;
 
@@ -21,6 +22,8 @@ namespace Nop.Data.DataProviders
 {
     public abstract class BaseDataProvider
     {
+        protected IMigrationManager _migrationManager;
+
         #region Utils
 
         /// <summary>
@@ -28,17 +31,14 @@ namespace Nop.Data.DataProviders
         /// </summary>
         private MappingSchema GetMappingSchema()
         {
-            if (Singleton<MappingSchema>.Instance is null)
+            Singleton<MappingSchema>.Instance ??= new MappingSchema(ConfigurationName)
             {
-                Singleton<MappingSchema>.Instance = new MappingSchema(ConfigurationName)
-                {
-                    MetadataReader = new FluentMigratorMetadataReader()
-                };
-            }
+                MetadataReader = new FluentMigratorMetadataReader(_migrationManager)
+            };
 
             if (MiniProfillerEnabled)
             {
-                var mpMappingSchema = new MappingSchema(new[] { Singleton<MappingSchema>.Instance });
+                var mpMappingSchema = new MappingSchema(Singleton<MappingSchema>.Instance);
 
                 mpMappingSchema.SetConvertExpression<ProfiledDbConnection, IDbConnection>(db => db.WrappedConnection);
                 mpMappingSchema.SetConvertExpression<ProfiledDbDataReader, IDataReader>(db => db.WrappedReader);
@@ -396,6 +396,24 @@ namespace Nop.Data.DataProviders
         {
             using var dataContext = await CreateDataConnectionAsync();
             return dataContext.Query<T>(sql, parameters).ToList();
+        }
+
+        /// <summary>
+        /// Initialize database
+        /// </summary>
+        public void InitializeDatabase()
+        {
+            var migrationManager = _migrationManager;
+            migrationManager.ApplyUpMigrations(typeof(NopDbStartup).Assembly);
+        }
+
+        /// <summary>
+        /// Initializes the data provider
+        /// </summary>
+        /// <param name="migrationManager">The migration manager</param>
+        public virtual void Initialize(IMigrationManager migrationManager)
+        {
+            _migrationManager = migrationManager;
         }
 
         #endregion

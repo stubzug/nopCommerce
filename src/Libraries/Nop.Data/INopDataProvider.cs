@@ -7,6 +7,7 @@ using LinqToDB;
 using LinqToDB.Data;
 using LinqToDB.Mapping;
 using Nop.Core;
+using Nop.Data.Migrations;
 
 namespace Nop.Data
 {
@@ -41,6 +42,12 @@ namespace Nop.Data
         /// Initialize database
         /// </summary>
         void InitializeDatabase();
+
+        /// <summary>
+        /// Initializes the data provider
+        /// </summary>
+        /// <param name="migrationManager">The migration manager</param>
+        void Initialize(IMigrationManager migrationManager);
 
         /// <summary>
         /// Insert a new entity
@@ -253,7 +260,7 @@ namespace Nop.Data
         /// The task result contains the returns collection of query result records
         /// </returns>
         Task<IList<T>> QueryAsync<T>(string sql, params DataParameter[] parameters);
-
+        
         #endregion
 
         #region Properties

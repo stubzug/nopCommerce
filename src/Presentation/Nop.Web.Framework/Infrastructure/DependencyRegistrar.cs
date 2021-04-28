@@ -44,7 +44,7 @@ using Nop.Services.Shipping;
 using Nop.Services.Shipping.Date;
 using Nop.Services.Shipping.Pickup;
 using Nop.Services.Stores;
-using Nop.Services.Tasks;
+using Nop.Services.ScheduleTasks;
 using Nop.Services.Tax;
 using Nop.Services.Themes;
 using Nop.Services.Topics;
@@ -76,11 +76,6 @@ namespace Nop.Web.Framework.Infrastructure
 
             //user agent helper
             services.AddScoped<IUserAgentHelper, UserAgentHelper>();
-
-            //data layer
-            services.AddTransient<IDataProviderManager, DataProviderManager>();
-            services.AddTransient(serviceProvider =>
-                serviceProvider.GetRequiredService<IDataProviderManager>().DataProvider);
 
             //repositories
             services.AddScoped(typeof(IRepository<>), typeof(EntityRepository<>));
@@ -276,6 +271,11 @@ namespace Nop.Web.Framework.Infrastructure
                     return isMatch;
                 }, typeof(IConsumer<>)))
                     services.AddScoped(findInterface, consumer);
+
+            //schedule tasks
+            services.AddSingleton<ITaskManager, TaskManager>();
+            services.AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
+            services.AddHostedService<ScheduleTaskHostedService>();
         }
 
         /// <summary>

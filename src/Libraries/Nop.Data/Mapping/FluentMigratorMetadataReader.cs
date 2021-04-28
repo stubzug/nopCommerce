@@ -7,7 +7,6 @@ using LinqToDB.Mapping;
 using LinqToDB.Metadata;
 using LinqToDB.SqlQuery;
 using Nop.Core;
-using Nop.Core.Infrastructure;
 using Nop.Data.Migrations;
 
 namespace Nop.Data.Mapping
@@ -25,9 +24,9 @@ namespace Nop.Data.Mapping
 
         #region Ctor
 
-        public FluentMigratorMetadataReader()
+        public FluentMigratorMetadataReader(IMigrationManager migrationManager)
         {
-            _migrationManager = EngineContext.Current.Resolve<IMigrationManager>();
+            _migrationManager = migrationManager;
         }
 
         #endregion

@@ -42,6 +42,9 @@ namespace Nop.Data
                     rb.WithVersionTable(new MigrationVersionInfo()).AddSqlServer().AddMySql5().AddPostgres()
                         // define the assembly containing the migrations
                         .ScanIn(mAssemblies).For.Migrations());
+
+            //preserve sort specifications, added to query by previous OrderBy calls
+            LinqToDB.Common.Configuration.Linq.DoNotClearOrderBys = true;
         }
 
         /// <summary>

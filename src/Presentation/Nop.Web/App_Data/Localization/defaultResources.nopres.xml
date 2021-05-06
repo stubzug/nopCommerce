@@ -18786,6 +18786,15 @@
   <LocaleResource Name="Search.Manufacturer">
     <Value>Manufacturer</Value>
   </LocaleResource>
+  <LocaleResource Name="Search.PriceRange">
+    <Value>Price range</Value>
+  </LocaleResource>
+  <LocaleResource Name="Search.PriceRange.From">
+    <Value>From</Value>
+  </LocaleResource>
+  <LocaleResource Name="Search.PriceRange.To">
+    <Value>to</Value>
+  </LocaleResource>
   <LocaleResource Name="Search.SearchBox.SearchPageLink">
     <Value>View all results...</Value>
   </LocaleResource>

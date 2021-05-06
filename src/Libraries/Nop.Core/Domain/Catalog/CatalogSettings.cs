@@ -251,26 +251,6 @@ namespace Nop.Core.Domain.Catalog
         public string SearchPagePageSizeOptions { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the price range filtering is enabled on search page
-        /// </summary>
-        public bool SearchPagePriceRangeFiltering { get; set; }
-
-        /// <summary>
-        /// Gets or sets the "from" price on search page
-        /// </summary>
-        public decimal SearchPagePriceFrom { get; set; }
-
-        /// <summary>
-        /// Gets or sets the "to" price on search page
-        /// </summary>
-        public decimal SearchPagePriceTo { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the price range should be entered manually on search page
-        /// </summary>
-        public bool SearchPageManuallyPriceRange { get; set; }
-
-        /// <summary>
         /// Gets or sets "List of products purchased by other customers who purchased the above" option is enable
         /// </summary>
         public bool ProductsAlsoPurchasedEnabled { get; set; }

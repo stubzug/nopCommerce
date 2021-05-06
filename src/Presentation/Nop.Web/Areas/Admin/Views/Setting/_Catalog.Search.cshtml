@@ -95,63 +95,14 @@
             </div>
         </div>
     </nop-nested-setting>
-    <div class="form-group row advanced-setting">
-        <div class="col-md-3">
-            <nop-override-store-checkbox asp-for="SearchPagePriceRangeFiltering_OverrideForStore" asp-input="SearchPagePriceRangeFiltering" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-            <nop-label asp-for="SearchPagePriceRangeFiltering" />
-        </div>
-        <div class="col-md-9">
-            <nop-editor asp-for="SearchPagePriceRangeFiltering" />
-            <span asp-validation-for="SearchPagePriceRangeFiltering"></span>
-        </div>
-    </div>
-    <nop-nested-setting asp-for="SearchPagePriceRangeFiltering">
-        <div class="form-group row advanced-setting" id="pnlSearchPageManuallyPriceRange">
-            <div class="col-md-3">
-                <nop-override-store-checkbox asp-for="SearchPageManuallyPriceRange_OverrideForStore" asp-input="SearchPageManuallyPriceRange" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-                <nop-label asp-for="SearchPageManuallyPriceRange" />
-            </div>
-            <div class="col-md-9">
-                <nop-editor asp-for="SearchPageManuallyPriceRange" />
-                <span asp-validation-for="SearchPageManuallyPriceRange"></span>
-            </div>
-        </div>
-        <div id="pnlSearchPagePriceRange">
-            <nop-nested-setting asp-for="SearchPageManuallyPriceRange">
-                <div class="form-group row advanced-setting">
-                    <div class="col-md-3">
-                        <nop-override-store-checkbox asp-for="SearchPagePriceFrom_OverrideForStore" asp-input="SearchPagePriceFrom" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-                        <nop-label asp-for="SearchPagePriceFrom" />
-                    </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="SearchPagePriceFrom" asp-postfix="@Model.PrimaryStoreCurrencyCode" />
-                        <span asp-validation-for="SearchPagePriceFrom"></span>
-                    </div>
-                </div>
-                <div class="form-group row advanced-setting">
-                    <div class="col-md-3">
-                        <nop-override-store-checkbox asp-for="SearchPagePriceTo_OverrideForStore" asp-input="SearchPagePriceTo" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
-                        <nop-label asp-for="SearchPagePriceTo" />
-                    </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="SearchPagePriceTo" asp-postfix="@Model.PrimaryStoreCurrencyCode" />
-                        <span asp-validation-for="SearchPagePriceTo"></span>
-                    </div>
-                </div>
-            </nop-nested-setting>
-        </div>
-    </nop-nested-setting>
 </div>
 <script>
     $(document).ready(function () {
         $("#@Html.IdFor(model => model.SearchPageAllowCustomersToSelectPageSize)").click(toggleSearchPagePageSize);
         $("#@Html.IdFor(model => model.ProductSearchAutoCompleteEnabled)").click(toggleProductSearchAutoComplete);
-        $("#@Html.IdFor(model => model.SearchPagePriceRangeFiltering)").click(toggleSearchPagePriceRangeFiltering);
-        $("#@Html.IdFor(model => model.SearchPageManuallyPriceRange)").click(toggleSearchPagePriceRangeFiltering);
 
         toggleSearchPagePageSize();
         toggleProductSearchAutoComplete();
-        toggleSearchPagePriceRangeFiltering();
     });
 
     function toggleSearchPagePageSize() {
@@ -175,20 +126,4 @@
             $('#pnlShowLinkToAllResultInSearchAutoComplete').hideElement();
         }
     }
-
-    function toggleSearchPagePriceRangeFiltering() {
-        if ($('#@Html.IdFor(model => model.SearchPagePriceRangeFiltering)').is(':checked')) {
-            $('#pnlSearchPageManuallyPriceRange').showElement();
-
-            if ($('#@Html.IdFor(model => model.SearchPageManuallyPriceRange)').is(':checked')) {
-                $('#pnlSearchPagePriceRange').showElement();
-            } else {
-                $('#pnlSearchPagePriceRange').hideElement();
-            }
-        } else {
-            $('#pnlSearchPagePriceRange').hideElement();
-            $('#pnlSearchPageManuallyPriceRange').hideElement();
-        }
-    }
-
 </script>

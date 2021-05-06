@@ -301,6 +301,12 @@ namespace Nop.Web.Factories
         /// <returns>The price range filter</returns>
         protected virtual async Task<PriceRangeFilterModel> PreparePriceRangeFilterAsync(PriceRangeModel selectedPriceRange, PriceRangeModel availablePriceRange)
         {
+            if (selectedPriceRange is null)
+                throw new ArgumentNullException(nameof(selectedPriceRange));
+
+            if (availablePriceRange is null)
+                throw new ArgumentNullException(nameof(availablePriceRange));
+
             var model = new PriceRangeFilterModel();
 
             if (!availablePriceRange.To.HasValue || availablePriceRange.To <= 0
@@ -712,39 +718,22 @@ namespace Nop.Web.Factories
 
             //price range
             PriceRangeModel selectedPriceRange = null;
+
             if (_catalogSettings.EnablePriceRangeFiltering && category.PriceRangeFiltering)
             {
                 selectedPriceRange = await GetConvertedPriceRangeAsync(command);
 
-                PriceRangeModel availablePriceRange = null;
-                if (!category.ManuallyPriceRange)
-                {
-                    async Task<decimal?> getProductPriceAsync(ProductSortingEnum orderBy)
-                    {
-                        var products = await _productService.SearchProductsAsync(0, 1,
-                            categoryIds: categoryIds,
-                            storeId: currentStore.Id,
-                            visibleIndividuallyOnly: true,
-                            excludeFeaturedProducts: !_catalogSettings.IgnoreFeaturedProducts && !_catalogSettings.IncludeFeaturedProductsInNormalLists,
-                            orderBy: orderBy);
+                var (minPrice, maxPrice) = category.ManuallyPriceRange ? (category.PriceFrom, category.PriceTo) :
+                    await _productService.GetProductPriceRangeAsync(
+                        categoryIds: categoryIds, 
+                        excludeFeaturedProducts: !_catalogSettings.IgnoreFeaturedProducts && !_catalogSettings.IncludeFeaturedProductsInNormalLists,
+                        storeId: currentStore.Id);
 
-                        return products?.FirstOrDefault()?.Price ?? 0;
-                    }
-
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = await getProductPriceAsync(ProductSortingEnum.PriceAsc),
-                        To = await getProductPriceAsync(ProductSortingEnum.PriceDesc)
-                    };
-                }
-                else
+                var availablePriceRange = new PriceRangeModel
                 {
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = category.PriceFrom,
-                        To = category.PriceTo
-                    };
-                }
+                    From = minPrice,
+                    To = maxPrice
+                };
 
                 model.PriceRangeFilter = await PreparePriceRangeFilterAsync(selectedPriceRange, availablePriceRange);
             }
@@ -984,35 +973,17 @@ namespace Nop.Web.Factories
             {
                 selectedPriceRange = await GetConvertedPriceRangeAsync(command);
 
-                PriceRangeModel availablePriceRange = null;
-                if (!manufacturer.ManuallyPriceRange)
-                {
-                    async Task<decimal?> getProductPriceAsync(ProductSortingEnum orderBy)
-                    {
-                        var products = await _productService.SearchProductsAsync(0, 1,
-                            manufacturerIds: manufacturerIds,
-                            storeId: currentStore.Id,
-                            visibleIndividuallyOnly: true,
-                            excludeFeaturedProducts: !_catalogSettings.IgnoreFeaturedProducts && !_catalogSettings.IncludeFeaturedProductsInNormalLists,
-                            orderBy: orderBy);
+                var (minPrice, maxPrice) = manufacturer.ManuallyPriceRange ? (manufacturer.PriceFrom, manufacturer.PriceTo) :
+                    await _productService.GetProductPriceRangeAsync(
+                        manufacturerId: manufacturer.Id, 
+                        excludeFeaturedProducts: !_catalogSettings.IgnoreFeaturedProducts && !_catalogSettings.IncludeFeaturedProductsInNormalLists,
+                        storeId: currentStore.Id);
 
-                        return products?.FirstOrDefault()?.Price ?? 0;
-                    }
-
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = await getProductPriceAsync(ProductSortingEnum.PriceAsc),
-                        To = await getProductPriceAsync(ProductSortingEnum.PriceDesc)
-                    };
-                }
-                else
+                var availablePriceRange = new PriceRangeModel
                 {
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = manufacturer.PriceFrom,
-                        To = manufacturer.PriceTo
-                    };
-                }
+                    From = minPrice,
+                    To = maxPrice
+                };
 
                 model.PriceRangeFilter = await PreparePriceRangeFilterAsync(selectedPriceRange, availablePriceRange);
             }
@@ -1231,40 +1202,24 @@ namespace Nop.Web.Factories
             await PreparePageSizeOptionsAsync(model, command, vendor.AllowCustomersToSelectPageSize,
                 vendor.PageSizeOptions, vendor.PageSize);
 
+            var currentStore = await _storeContext.GetCurrentStoreAsync();
+
             //price range
             PriceRangeModel selectedPriceRange = null;
             if (_catalogSettings.EnablePriceRangeFiltering && vendor.PriceRangeFiltering)
             {
                 selectedPriceRange = await GetConvertedPriceRangeAsync(command);
 
-                PriceRangeModel availablePriceRange = null;
-                if (!vendor.ManuallyPriceRange)
-                {
-                    async Task<decimal?> getProductPriceAsync(ProductSortingEnum orderBy)
-                    {
-                        var products = await _productService.SearchProductsAsync(0, 1,
-                            vendorId: vendor.Id,
-                            storeId: (await _storeContext.GetCurrentStoreAsync()).Id,
-                            visibleIndividuallyOnly: true,
-                            orderBy: orderBy);
+                var (minPrice, maxPrice) = vendor.ManuallyPriceRange ? (vendor.PriceFrom, vendor.PriceTo) :
+                    await _productService.GetProductPriceRangeAsync(
+                        vendorId: vendor.Id,
+                        storeId: currentStore.Id);
 
-                        return products?.FirstOrDefault()?.Price ?? 0;
-                    }
-
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = await getProductPriceAsync(ProductSortingEnum.PriceAsc),
-                        To = await getProductPriceAsync(ProductSortingEnum.PriceDesc)
-                    };
-                }
-                else
+                var availablePriceRange = new PriceRangeModel
                 {
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = vendor.PriceFrom,
-                        To = vendor.PriceTo
-                    };
-                }
+                    From = minPrice,
+                    To = maxPrice
+                };
 
                 model.PriceRangeFilter = await PreparePriceRangeFilterAsync(selectedPriceRange, availablePriceRange);
             }
@@ -1276,7 +1231,7 @@ namespace Nop.Web.Factories
                 vendorId: vendor.Id,
                 priceMin: selectedPriceRange?.From,
                 priceMax: selectedPriceRange?.To,
-                storeId: (await _storeContext.GetCurrentStoreAsync()).Id,
+                storeId: currentStore.Id,
                 visibleIndividuallyOnly: true,
                 orderBy: (ProductSortingEnum)command.OrderBy);
 
@@ -1476,40 +1431,25 @@ namespace Nop.Web.Factories
             await PreparePageSizeOptionsAsync(model, command, _catalogSettings.ProductsByTagAllowCustomersToSelectPageSize,
                 _catalogSettings.ProductsByTagPageSizeOptions, _catalogSettings.ProductsByTagPageSize);
 
+            var currentStore = await _storeContext.GetCurrentStoreAsync();
+
             //price range
             PriceRangeModel selectedPriceRange = null;
             if (_catalogSettings.EnablePriceRangeFiltering && _catalogSettings.ProductsByTagPriceRangeFiltering)
             {
                 selectedPriceRange = await GetConvertedPriceRangeAsync(command);
 
-                PriceRangeModel availablePriceRange = null;
-                if (!_catalogSettings.ProductsByTagManuallyPriceRange)
-                {
-                    async Task<decimal?> getProductPriceAsync(ProductSortingEnum orderBy)
-                    {
-                        var products = await _productService.SearchProductsAsync(0, 1,
-                            storeId: (await _storeContext.GetCurrentStoreAsync()).Id,
-                            productTagId: productTag.Id,
-                            visibleIndividuallyOnly: true,
-                            orderBy: orderBy);
+                var (minPrice, maxPrice) = _catalogSettings.ProductsByTagManuallyPriceRange ? 
+                    (_catalogSettings.ProductsByTagPriceFrom, _catalogSettings.ProductsByTagPriceTo) :
+                    await _productService.GetProductPriceRangeAsync(
+                        productTagId: productTag.Id,
+                        storeId: currentStore.Id);
 
-                        return products?.FirstOrDefault()?.Price ?? 0;
-                    }
-
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = await getProductPriceAsync(ProductSortingEnum.PriceAsc),
-                        To = await getProductPriceAsync(ProductSortingEnum.PriceDesc)
-                    };
-                }
-                else
+                var availablePriceRange = new PriceRangeModel
                 {
-                    availablePriceRange = new PriceRangeModel
-                    {
-                        From = _catalogSettings.ProductsByTagPriceFrom,
-                        To = _catalogSettings.ProductsByTagPriceTo
-                    };
-                }
+                    From = minPrice,
+                    To = maxPrice
+                };
 
                 model.PriceRangeFilter = await PreparePriceRangeFilterAsync(selectedPriceRange, availablePriceRange);
             }
@@ -1687,6 +1627,8 @@ namespace Nop.Web.Factories
                 {
                     var categoryIds = new List<int>();
                     var manufacturerId = 0;
+                    decimal? minPriceConverted = null;
+                    decimal? maxPriceConverted = null;
                     var searchInDescriptions = false;
                     var vendorId = 0;
                     if (searchModel.advs)
@@ -1706,6 +1648,24 @@ namespace Nop.Web.Factories
 
                         manufacturerId = searchModel.mid;
 
+                        //min price
+                        if (!string.IsNullOrEmpty(searchModel.pf))
+                        {
+                            if (decimal.TryParse(searchModel.pf, out var minPrice))
+                                minPriceConverted =
+                                    await _currencyService.ConvertToPrimaryStoreCurrencyAsync(minPrice,
+                                        await _workContext.GetWorkingCurrencyAsync());
+                        }
+
+                        //max price
+                        if (!string.IsNullOrEmpty(searchModel.pt))
+                        {
+                            if (decimal.TryParse(searchModel.pt, out var maxPrice))
+                                maxPriceConverted =
+                                    await _currencyService.ConvertToPrimaryStoreCurrencyAsync(maxPrice,
+                                        await _workContext.GetWorkingCurrencyAsync());
+                        }
+
                         if (searchModel.asv)
                             vendorId = searchModel.vid;
 
@@ -1717,48 +1677,11 @@ namespace Nop.Web.Factories
                     var workingLanguage = await _workContext.GetWorkingLanguageAsync();
 
                     //price range
-                    PriceRangeModel selectedPriceRange = null;
-                    if (_catalogSettings.EnablePriceRangeFiltering && _catalogSettings.SearchPagePriceRangeFiltering)
+                    model.PriceRangeFilter = await PreparePriceRangeFilterAsync(new PriceRangeModel(), new PriceRangeModel
                     {
-                        selectedPriceRange = await GetConvertedPriceRangeAsync(command);
-
-                        PriceRangeModel availablePriceRange = null;
-                        if (!_catalogSettings.SearchPageManuallyPriceRange)
-                        {
-                            async Task<decimal?> getProductPriceAsync(ProductSortingEnum orderBy)
-                            {
-                                var products = await _productService.SearchProductsAsync(0, 1,
-                                    categoryIds: categoryIds,
-                                    manufacturerIds: new List<int> { manufacturerId },
-                                    storeId: currentStore.Id,
-                                    visibleIndividuallyOnly: true,
-                                    keywords: searchTerms,
-                                    searchDescriptions: searchInDescriptions,
-                                    searchProductTags: searchInProductTags,
-                                    languageId: workingLanguage.Id,
-                                    vendorId: vendorId,
-                                    orderBy: orderBy);
-
-                                return products?.FirstOrDefault()?.Price ?? 0;
-                            }
-
-                            availablePriceRange = new PriceRangeModel
-                            {
-                                From = await getProductPriceAsync(ProductSortingEnum.PriceAsc),
-                                To = await getProductPriceAsync(ProductSortingEnum.PriceDesc)
-                            };
-                        }
-                        else
-                        {
-                            availablePriceRange = new PriceRangeModel
-                            {
-                                From = _catalogSettings.SearchPagePriceFrom,
-                                To = _catalogSettings.SearchPagePriceTo
-                            };
-                        }
-
-                        model.PriceRangeFilter = await PreparePriceRangeFilterAsync(selectedPriceRange, availablePriceRange);
-                    }
+                        From = minPriceConverted,
+                        To = maxPriceConverted
+                    });
 
                     //products
                     products = await _productService.SearchProductsAsync(
@@ -1769,8 +1692,8 @@ namespace Nop.Web.Factories
                         storeId: currentStore.Id,
                         visibleIndividuallyOnly: true,
                         keywords: searchTerms,
-                        priceMin: selectedPriceRange?.From,
-                        priceMax: selectedPriceRange?.To,
+                        priceMin: minPriceConverted,
+                        priceMax: maxPriceConverted,
                         searchDescriptions: searchInDescriptions,
                         searchProductTags: searchInProductTags,
                         languageId: workingLanguage.Id,

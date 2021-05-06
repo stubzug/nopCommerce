@@ -43,6 +43,16 @@ namespace Nop.Web.Models.Catalog
         public int vid { get; set; }
 
         /// <summary>
+        /// Price - From 
+        /// </summary>
+        public string pf { get; set; }
+
+        /// <summary>
+        /// Price - To
+        /// </summary>
+        public string pt { get; set; }
+
+        /// <summary>
         /// A value indicating whether to search in descriptions
         /// </summary>
         [NopResourceDisplayName("Search.SearchInDescriptions")]

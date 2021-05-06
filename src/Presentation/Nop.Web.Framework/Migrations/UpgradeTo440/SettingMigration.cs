@@ -12,6 +12,7 @@ using Nop.Data.Migrations;
 using Nop.Services.Catalog;
 using Nop.Services.Configuration;
 using Nop.Services.Seo;
+using LinqToDB.Tools;
 
 namespace Nop.Web.Framework.Migrations.UpgradeTo440
 {
@@ -113,30 +114,6 @@ namespace Nop.Web.Framework.Migrations.UpgradeTo440
             if (!settingService.SettingExistsAsync(catalogSettings, settings => settings.EnablePriceRangeFiltering).Result)
             {
                 catalogSettings.EnablePriceRangeFiltering = true;
-                settingService.SaveSettingAsync(catalogSettings).Wait();
-            }
-
-            if (!settingService.SettingExistsAsync(catalogSettings, settings => settings.SearchPagePriceRangeFiltering).Result)
-            {
-                catalogSettings.SearchPagePriceRangeFiltering = true;
-                settingService.SaveSettingAsync(catalogSettings).Wait();
-            }
-
-            if (!settingService.SettingExistsAsync(catalogSettings, settings => settings.SearchPagePriceFrom).Result)
-            {
-                catalogSettings.SearchPagePriceFrom = NopCatalogDefaults.DefaultPriceRangeFrom;
-                settingService.SaveSettingAsync(catalogSettings).Wait();
-            }
-
-            if (!settingService.SettingExistsAsync(catalogSettings, settings => settings.SearchPagePriceTo).Result)
-            {
-                catalogSettings.SearchPagePriceTo = NopCatalogDefaults.DefaultPriceRangeTo;
-                settingService.SaveSettingAsync(catalogSettings).Wait();
-            }
-
-            if (!settingService.SettingExistsAsync(catalogSettings, settings => settings.SearchPageManuallyPriceRange).Result)
-            {
-                catalogSettings.SearchPageManuallyPriceRange = false;
                 settingService.SaveSettingAsync(catalogSettings).Wait();
             }
 

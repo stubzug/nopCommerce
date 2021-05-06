@@ -23,10 +23,6 @@
     }
 </script>
 
-@section CatalogFilters {
-    @await Html.PartialAsync("_CatalogFilters", Model.CatalogProductsModel)
-}
-
 <div class="page search-page">
     <div class="page-title">
         <h1>@T("Search")</h1>
@@ -73,6 +69,15 @@
                                     <select asp-for="vid" asp-items="Model.AvailableVendors"></select>
                                 </div>
                             }
+                            <div class="inputs">
+                                <label for="price-range">@T("Search.PriceRange"):</label>
+                                <span id="price-range" class="price-range">
+                                    @T("Search.PriceRange.From")
+                                    <input asp-for="pf" class="price-from" aria-label="@T("Search.PriceRange.From")" />
+                                    @T("Search.PriceRange.To")
+                                    <input asp-for="pt" class="price-to" aria-label="@T("Search.PriceRange.To")" />
+                                </span>
+                            </div>
                             <div class="inputs reversed">
                                 <input asp-for="sid" />
                                 <label asp-for="sid">@T("Search.SearchInDescriptions")</label>
@@ -109,6 +114,8 @@
                                 .addParameter('isc', $('#@Html.IdFor(model => model.isc)').is(':checked'))
                                 .addParameter('mid', $('#@Html.IdFor(model => model.mid)').val())
                                 .addParameter('vid', $('#@Html.IdFor(model => model.vid)').val())
+                                .addParameter('pf', $('#@Html.IdFor(model => model.pf)').val())
+                                .addParameter('pt', $('#@Html.IdFor(model => model.pt)').val())
                                 .addParameter('sid', $('#@Html.IdFor(model => model.sid)').is(':checked'));
                         }
                     });

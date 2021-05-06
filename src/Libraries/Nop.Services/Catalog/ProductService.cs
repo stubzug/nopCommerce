@@ -745,6 +745,64 @@ namespace Nop.Services.Catalog
         }
 
         /// <summary>
+        /// Get minimum & maximum price of products
+        /// </summary>
+        /// <param name="categoryIds">Category identifiers</param>
+        /// <param name="manufacturerId">Manufacturer identifier</param>
+        /// <param name="excludeFeaturedProducts">A value indicating whether loaded products are marked as featured (relates only to categories and manufacturers); "false" (by default) to load all records; "true" to exclude featured products from results</param>
+        /// <param name="productTagId">Product tag identifier</param>
+        /// <param name="vendorId">Vendor identifier; pass 0 to skip this filter</param>
+        /// <param name="storeId">Store identifier; 0 to load all records</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains min & max prices of products
+        /// </returns>
+        public virtual async Task<(decimal minPrice, decimal maxPrice)> GetProductPriceRangeAsync(
+            IList<int> categoryIds = null,
+            int manufacturerId = 0,
+            bool excludeFeaturedProducts = false,
+            int productTagId = 0,
+            int vendorId = 0,
+            int storeId = 0)
+        {
+            var productsQuery = await _storeMappingService.ApplyStoreMapping(_productRepository.Table, storeId);
+
+            var customer = await _workContext.GetCurrentCustomerAsync();
+            productsQuery = await _aclService.ApplyAcl(productsQuery, customer);
+
+            if (categoryIds is not null)
+            {
+                productsQuery = from p in productsQuery
+                                join pc in _productCategoryRepository.Table on p.Id equals pc.ProductId
+                                where (!excludeFeaturedProducts || !pc.IsFeaturedProduct) && categoryIds.Contains(pc.CategoryId)
+                                select p;
+            }
+
+            if (manufacturerId > 0)
+            {
+                productsQuery = from p in productsQuery
+                                join pm in _productManufacturerRepository.Table on p.Id equals pm.ProductId
+                                where (!excludeFeaturedProducts || !pm.IsFeaturedProduct) && manufacturerId == pm.ManufacturerId
+                                select p;
+            }
+
+            if (productTagId > 0)
+            {
+                productsQuery = from p in productsQuery
+                                join pptm in _productTagMappingRepository.Table on p.Id equals pptm.ProductId
+                                where pptm.ProductTagId == productTagId
+                                select p;
+            }
+
+            var pricesQuery = from p in productsQuery
+                              where p.Published && p.VisibleIndividually && (vendorId == 0 || p.VendorId == vendorId)
+                              group p by 1 into grp
+                              select new { minPrice = grp.Min(p => p.Price), maxPrice = grp.Max(p => p.Price) };
+
+            return await pricesQuery.ToAsyncEnumerable().Select(x => (x.minPrice, x.maxPrice)).FirstAsync();
+        }
+
+        /// <summary>
         /// Search products
         /// </summary>
         /// <param name="pageIndex">Page index</param>
@@ -846,7 +904,7 @@ namespace Nop.Services.Catalog
                 var langs = await _languageService.GetAllLanguagesAsync(showHidden: true);
 
                 //Set a flag which will to points need to search in localized properties. If showHidden doesn't set to true should be at least two published languages.
-                var searchLocalizedValue = languageId > 0 && langs.Count() >= 2 && (showHidden || langs.Count(l => l.Published) >= 2);
+                var searchLocalizedValue = languageId > 0 && langs.Count >= 2 && (showHidden || langs.Count(l => l.Published) >= 2);
 
                 IQueryable<int> productsByKeywords;
 
@@ -903,7 +961,7 @@ namespace Nop.Services.Catalog
                                                 lp.LocaleKey == nameof(ProductTag.Name) &&
                                                 lp.LocaleValue.Contains(keywords)
                                 where
-                                    (lp.LocaleKeyGroup == nameof(Product) && lp.LanguageId == languageId) && (checkName || checkShortDesc) ||
+                                    lp.LocaleKeyGroup == nameof(Product) && lp.LanguageId == languageId && (checkName || checkShortDesc) ||
                                     checkProductTags
 
                                 select lp.EntityId);

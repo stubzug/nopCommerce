@@ -118,6 +118,27 @@ namespace Nop.Services.Catalog
         Task<int> GetNumberOfProductsInCategoryAsync(IList<int> categoryIds = null, int storeId = 0);
 
         /// <summary>
+        /// Get minimum & maximum price of products
+        /// </summary>
+        /// <param name="categoryIds">Category identifiers</param>
+        /// <param name="manufacturerId">Manufacturer identifier</param>
+        /// <param name="excludeFeaturedProducts">A value indicating whether loaded products are marked as featured (relates only to categories and manufacturers); "false" (by default) to load all records; "true" to exclude featured products from results</param>
+        /// <param name="productTagId">Product tag identifier</param>
+        /// <param name="vendorId">Vendor identifier; pass 0 to skip this filter</param>
+        /// <param name="storeId">Store identifier; 0 to load all records</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation
+        /// The task result contains min & max prices of products
+        /// </returns>
+        Task<(decimal minPrice, decimal maxPrice)> GetProductPriceRangeAsync(
+            IList<int> categoryIds = null, 
+            int manufacturerId = 0, 
+            bool excludeFeaturedProducts = false, 
+            int productTagId = 0, 
+            int vendorId = 0, 
+            int storeId = 0);
+
+        /// <summary>
         /// Search products
         /// </summary>
         /// <param name="pageIndex">Page index</param>

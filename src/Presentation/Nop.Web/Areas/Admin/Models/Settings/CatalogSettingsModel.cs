@@ -179,22 +179,6 @@ namespace Nop.Web.Areas.Admin.Models.Settings
         public string SearchPagePageSizeOptions { get; set; }
         public bool SearchPagePageSizeOptions_OverrideForStore { get; set; }
 
-        [NopResourceDisplayName("Admin.Configuration.Settings.Catalog.SearchPagePriceRangeFiltering")]
-        public bool SearchPagePriceRangeFiltering { get; set; }
-        public bool SearchPagePriceRangeFiltering_OverrideForStore { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Catalog.SearchPagePriceFrom")]
-        public decimal SearchPagePriceFrom { get; set; }
-        public bool SearchPagePriceFrom_OverrideForStore { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Catalog.SearchPagePriceTo")]
-        public decimal SearchPagePriceTo { get; set; }
-        public bool SearchPagePriceTo_OverrideForStore { get; set; }
-
-        [NopResourceDisplayName("Admin.Configuration.Settings.Catalog.SearchPageManuallyPriceRange")]
-        public bool SearchPageManuallyPriceRange { get; set; }
-        public bool SearchPageManuallyPriceRange_OverrideForStore { get; set; }
-
         [NopResourceDisplayName("Admin.Configuration.Settings.Catalog.ProductSearchAutoCompleteEnabled")]
         public bool ProductSearchAutoCompleteEnabled { get; set; }
         public bool ProductSearchAutoCompleteEnabled_OverrideForStore { get; set; }

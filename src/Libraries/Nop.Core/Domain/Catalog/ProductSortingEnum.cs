@@ -6,6 +6,12 @@
     public enum ProductSortingEnum
     {
         /// <summary>
+        /// Not apply
+        /// </summary>
+
+        None = -1,
+
+        /// <summary>
         /// Position (display order)
         /// </summary>
         Position = 0,
@@ -33,6 +39,6 @@
         /// <summary>
         /// Product creation date
         /// </summary>
-        CreatedOn = 15,
+        CreatedOn = 15
     }
 }

@@ -993,7 +993,7 @@ namespace Nop.Services.Catalog
                     productsQuery =
                         from p in productsQuery
                         join pc in productCategoryQuery on p.Id equals pc.ProductId
-                        orderby pc.DisplayOrder
+                        orderby pc.DisplayOrder, p.Name
                         select p;
                 }
             }
@@ -1018,7 +1018,7 @@ namespace Nop.Services.Catalog
                     productsQuery =
                         from p in productsQuery
                         join pm in productManufacturerQuery on p.Id equals pm.ProductId
-                        orderby pm.DisplayOrder
+                        orderby pm.DisplayOrder, p.Name
                         select p;
                 }
             }

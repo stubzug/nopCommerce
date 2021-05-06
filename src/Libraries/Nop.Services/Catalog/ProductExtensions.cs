@@ -10,8 +10,8 @@ namespace Nop.Services.Catalog
         /// </summary>
         /// <param name="productsQuery">A sequence of products to order</param>
         /// <param name="orderBy">Product sorting rule</param>
-        /// <returns>An System.Linq.IOrderedQueryable`1 whose elements are sorted according to a rule.</returns>
-        public static IOrderedQueryable<Product> OrderBy(this IQueryable<Product> productsQuery, ProductSortingEnum orderBy) 
+        /// <returns>An System.Linq.IQueryable`1 whose elements are sorted according to a rule.</returns>
+        public static IQueryable<Product> OrderBy(this IQueryable<Product> productsQuery, ProductSortingEnum orderBy) 
         {
             return orderBy switch
             {
@@ -20,7 +20,8 @@ namespace Nop.Services.Catalog
                 ProductSortingEnum.PriceAsc => productsQuery.OrderBy(p => p.Price),
                 ProductSortingEnum.PriceDesc => productsQuery.OrderByDescending(p => p.Price),
                 ProductSortingEnum.CreatedOn => productsQuery.OrderByDescending(p => p.CreatedOnUtc),
-                _ => productsQuery.OrderBy(p => p.DisplayOrder).ThenBy(p => p.Id)
+                ProductSortingEnum.None when productsQuery is IOrderedQueryable => productsQuery,
+                ProductSortingEnum.Position or _ => productsQuery.OrderBy(p => p.DisplayOrder).ThenBy(p => p.Id)
             };
         }
     }

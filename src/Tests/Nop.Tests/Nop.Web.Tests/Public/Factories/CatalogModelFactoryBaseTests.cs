@@ -342,8 +342,8 @@ namespace Nop.Tests.Nop.Web.Tests.Public.Factories
             await _catalogModelFactory.PrepareSortingOptionsAsync(model, command);
 
             model.AllowProductSorting.Should().BeTrue();
-            model.AvailableSortOptions.Count.Should().Be(6);
-            command.OrderBy.Should().Be(0);
+            model.AvailableSortOptions.Count.Should().Be(7);
+            command.OrderBy.Should().Be(-1);
         }
 
         [Test]

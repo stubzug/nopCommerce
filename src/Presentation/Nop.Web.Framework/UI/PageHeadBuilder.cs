@@ -808,6 +808,19 @@ namespace Nop.Web.Framework.UI
             return _activeAdminMenuSystemName;
         }
 
+        /// <summary>
+        /// Generate all title parts
+        /// </summary>
+        /// <param name="addDefaultTitle">A value indicating whether to insert a default title</param>
+        /// <returns>
+        /// A task that represents asynchronous operation
+        /// The task result contains the title parts
+        /// </returns>
+        public virtual Task<string> GenerateTitleAsync(bool addDefaultTitle)
+        {
+            return Task.FromResult(GenerateTitle(addDefaultTitle));
+        }
+
         #endregion
 
         #region Nested classes

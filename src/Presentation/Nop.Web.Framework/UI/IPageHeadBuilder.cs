@@ -1,4 +1,6 @@
-﻿namespace Nop.Web.Framework.UI
+﻿using System.Threading.Tasks;
+
+namespace Nop.Web.Framework.UI
 {
     /// <summary>
     /// Page head builder
@@ -191,5 +193,15 @@
         /// </summary>
         /// <returns>System name</returns>
         string GetActiveMenuItemSystemName();
+
+        /// <summary>
+        /// Generate all title parts
+        /// </summary>
+        /// <param name="addDefaultTitle">A value indicating whether to insert a default title</param>
+        /// <returns>
+        /// A task that represents asynchronous operation
+        /// The task result contains the title parts
+        /// </returns>
+        Task<string> GenerateTitleAsync(bool addDefaultTitle);
     }
 }

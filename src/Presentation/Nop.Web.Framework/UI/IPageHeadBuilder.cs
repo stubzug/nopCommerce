@@ -203,5 +203,23 @@ namespace Nop.Web.Framework.UI
         /// The task result contains the title parts
         /// </returns>
         Task<string> GenerateTitleAsync(bool addDefaultTitle);
+
+        /// <summary>
+        /// Generate all description parts
+        /// </summary>
+        /// <returns>
+        /// A task that represents asynchronous operation
+        /// The task result contains all description parts
+        /// </returns>
+        Task<string> GenerateMetaDescriptionAsync();
+
+        /// <summary>
+        /// Generate all keyword parts
+        /// </summary>
+        /// <returns>
+        /// A task that represents asynchronous operation
+        /// The task result contains all keyword parts
+        /// </returns>
+        Task<string> GenerateMetaKeywordsAsync();
     }
 }

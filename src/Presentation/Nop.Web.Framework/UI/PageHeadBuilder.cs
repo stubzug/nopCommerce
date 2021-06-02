@@ -821,6 +821,30 @@ namespace Nop.Web.Framework.UI
             return Task.FromResult(GenerateTitle(addDefaultTitle));
         }
 
+        /// <summary>
+        /// Generate all description parts
+        /// </summary>
+        /// <returns>
+        /// A task that represents asynchronous operation
+        /// The task result contains all description parts
+        /// </returns>
+        public virtual Task<string> GenerateMetaDescriptionAsync()
+        {
+            return Task.FromResult(GenerateMetaDescription());
+        }
+
+        /// <summary>
+        /// Generate all keyword parts
+        /// </summary>
+        /// <returns>
+        /// A task that represents asynchronous operation
+        /// The task result contains all keyword parts
+        /// </returns>
+        public virtual Task<string> GenerateMetaKeywordsAsync()
+        {
+            return Task.FromResult(GenerateMetaKeywords());
+        }
+
         #endregion
 
         #region Nested classes

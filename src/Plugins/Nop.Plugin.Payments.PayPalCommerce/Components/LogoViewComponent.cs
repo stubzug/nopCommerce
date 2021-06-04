@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Nop.Core;
+using Nop.Plugin.Payments.PayPalCommerce.Services;
 using Nop.Services.Payments;
 using Nop.Web.Framework.Components;
 using Nop.Web.Framework.Infrastructure;
@@ -55,6 +56,9 @@ namespace Nop.Plugin.Payments.PayPalCommerce.Components
             var customer = await _workContext.GetCurrentCustomerAsync();
             var store = await _storeContext.GetCurrentStoreAsync();
             if (!await _paymentPluginManager.IsPluginActiveAsync(PayPalCommerceDefaults.SystemName, customer, store?.Id ?? 0))
+                return Content(string.Empty);
+
+            if (!ServiceManager.IsConfigured(_settings))
                 return Content(string.Empty);
 
             var script = widgetZone.Equals(PublicWidgetZones.HeaderLinksBefore) && _settings.DisplayLogoInHeaderLinks

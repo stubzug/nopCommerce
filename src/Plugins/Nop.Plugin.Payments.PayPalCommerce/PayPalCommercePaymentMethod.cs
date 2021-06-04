@@ -292,7 +292,8 @@ namespace Nop.Plugin.Payments.PayPalCommerce
         /// </returns>
         public Task<bool> HidePaymentMethodAsync(IList<ShoppingCartItem> cart)
         {
-            return Task.FromResult(false);
+            var notConfigured = !ServiceManager.IsConfigured(_settings);
+            return Task.FromResult(notConfigured);
         }
 
         /// <summary>

@@ -44,6 +44,7 @@ namespace Nop.Plugin.Payments.PayPalCommerce
         private readonly ISettingService _settingService;
         private readonly IStoreService _storeService;
         private readonly IUrlHelperFactory _urlHelperFactory;
+        private readonly PaymentSettings _paymentSettings;
         private readonly PayPalCommerceSettings _settings;
         private readonly ServiceManager _serviceManager;
         private readonly WidgetSettings _widgetSettings;
@@ -61,6 +62,7 @@ namespace Nop.Plugin.Payments.PayPalCommerce
             ISettingService settingService,
             IStoreService storeService,
             IUrlHelperFactory urlHelperFactory,
+            PaymentSettings paymentSettings,
             PayPalCommerceSettings settings,
             ServiceManager serviceManager,
             WidgetSettings widgetSettings)
@@ -74,6 +76,7 @@ namespace Nop.Plugin.Payments.PayPalCommerce
             _settingService = settingService;
             _storeService = storeService;
             _urlHelperFactory = urlHelperFactory;
+            _paymentSettings = paymentSettings;
             _settings = settings;
             _serviceManager = serviceManager;
             _widgetSettings = widgetSettings;
@@ -442,6 +445,12 @@ namespace Nop.Plugin.Payments.PayPalCommerce
                 RequestTimeout = PayPalCommerceDefaults.RequestTimeout
             });
 
+            if (!_paymentSettings.ActivePaymentMethodSystemNames.Contains(PayPalCommerceDefaults.SystemName))
+            {
+                _paymentSettings.ActivePaymentMethodSystemNames.Add(PayPalCommerceDefaults.SystemName);
+                await _settingService.SaveSettingAsync(_paymentSettings);
+            }
+
             if (!_widgetSettings.ActiveWidgetSystemNames.Contains(PayPalCommerceDefaults.SystemName))
             {
                 _widgetSettings.ActiveWidgetSystemNames.Add(PayPalCommerceDefaults.SystemName);
@@ -517,11 +526,18 @@ namespace Nop.Plugin.Payments.PayPalCommerce
             }
 
             //settings
+            if (_paymentSettings.ActivePaymentMethodSystemNames.Contains(PayPalCommerceDefaults.SystemName))
+            {
+                _paymentSettings.ActivePaymentMethodSystemNames.Remove(PayPalCommerceDefaults.SystemName);
+                await _settingService.SaveSettingAsync(_paymentSettings);
+            }
+
             if (_widgetSettings.ActiveWidgetSystemNames.Contains(PayPalCommerceDefaults.SystemName))
             {
                 _widgetSettings.ActiveWidgetSystemNames.Remove(PayPalCommerceDefaults.SystemName);
                 await _settingService.SaveSettingAsync(_widgetSettings);
             }
+
             await _settingService.DeleteSettingAsync<PayPalCommerceSettings>();
 
             //locales

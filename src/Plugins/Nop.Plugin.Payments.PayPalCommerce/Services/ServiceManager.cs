@@ -424,8 +424,7 @@ namespace Nop.Plugin.Payments.PayPalCommerce.Services
                     var product = await _productService.GetProductByIdAsync(item.ProductId);
 
                     var (unitPrice, _, _) = await _shoppingCartService.GetUnitPriceAsync(item, true);
-                    var (price, _) = await _taxService.GetProductPriceAsync(product, unitPrice, false, customer);
-                    var itemPrice = Math.Round(price, 2);
+                    var (itemPrice, _) = await _taxService.GetProductPriceAsync(product, unitPrice, false, customer);
                     itemTotal += itemPrice * item.Quantity;
                     return new Item
                     {
@@ -448,15 +447,13 @@ namespace Nop.Plugin.Payments.PayPalCommerce.Services
                     await foreach (var attributeValue in values)
                     {
                         var (attributePrice, _) = await _taxService.GetCheckoutAttributePriceAsync(attribute, attributeValue, false, customer);
-                        var roundedAttributePrice = Math.Round(attributePrice, 2);
-
-                        itemTotal += roundedAttributePrice;
+                        itemTotal += attributePrice;
                         purchaseUnit.Items.Add(new Item
                         {
                             Name = CommonHelper.EnsureMaximumLength(attribute.Name, 127),
                             Description = CommonHelper.EnsureMaximumLength($"{attribute.Name} - {attributeValue.Name}", 127),
                             Quantity = 1.ToString(),
-                            UnitAmount = new PayPalCheckoutSdk.Orders.Money { CurrencyCode = currency, Value = roundedAttributePrice.ToString("0.00", CultureInfo.InvariantCulture) }
+                            UnitAmount = new PayPalCheckoutSdk.Orders.Money { CurrencyCode = currency, Value = attributePrice.ToString("0.00", CultureInfo.InvariantCulture) }
                         });
                     }
                 }

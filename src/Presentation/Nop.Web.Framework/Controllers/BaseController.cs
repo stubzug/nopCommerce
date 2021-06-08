@@ -157,7 +157,7 @@ namespace Nop.Web.Framework.Controllers
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
 
-            pageHeadBuilder.AddEditPageUrl(editPageUrl);
+            pageHeadBuilder.AddEditPageUrlAsync(editPageUrl);
         }
 
         #endregion

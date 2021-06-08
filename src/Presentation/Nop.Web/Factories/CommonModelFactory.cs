@@ -409,7 +409,7 @@ namespace Nop.Web.Factories
                 ImpersonatedCustomerName = await _customerService.IsRegisteredAsync(customer) ? await _customerService.FormatUsernameAsync(customer) : string.Empty,
                 IsCustomerImpersonated = _workContext.OriginalCustomerIfImpersonated != null,
                 DisplayAdminLink = await _permissionService.AuthorizeAsync(StandardPermissionProvider.AccessAdminPanel),
-                EditPageUrl = _pageHeadBuilder.GetEditPageUrl()
+                EditPageUrl = await _pageHeadBuilder.GetEditPageUrlAsync()
             };
 
             return model;

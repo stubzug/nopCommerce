@@ -11,50 +11,54 @@ namespace Nop.Web.Framework.UI
         /// Add title element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Title part</param>
-        void AddTitleParts(string part);
+        Task AddTitlePartsAsync(string part);
         /// <summary>
         /// Append title element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Title part</param>
-        void AppendTitleParts(string part);
+        Task AppendTitlePartsAsync(string part);
         /// <summary>
         /// Generate all title parts
         /// </summary>
         /// <param name="addDefaultTitle">A value indicating whether to insert a default title</param>
         /// <returns>Generated string</returns>
-        string GenerateTitle(bool addDefaultTitle);
+        Task<string> GenerateTitleAsync(bool addDefaultTitle);
 
         /// <summary>
         /// Add meta description element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta description part</param>
-        void AddMetaDescriptionParts(string part);
+        Task AddMetaDescriptionPartsAsync(string part);
+
         /// <summary>
         /// Append meta description element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta description part</param>
-        void AppendMetaDescriptionParts(string part);
+        Task AppendMetaDescriptionPartsAsync(string part);
+
         /// <summary>
         /// Generate all description parts
         /// </summary>
         /// <returns>Generated string</returns>
-        string GenerateMetaDescription();
+        Task<string> GenerateMetaDescriptionAsync();
 
         /// <summary>
         /// Add meta keyword element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta keyword part</param>
-        void AddMetaKeywordParts(string part);
+        Task AddMetaKeywordPartsAsync(string part);
+
         /// <summary>
         /// Append meta keyword element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta keyword part</param>
-        void AppendMetaKeywordParts(string part);
+        Task AppendMetaKeywordPartsAsync(string part);
+
         /// <summary>
         /// Generate all keyword parts
         /// </summary>
         /// <returns>Generated string</returns>
-        string GenerateMetaKeywords();
+        Task<string> GenerateMetaKeywordsAsync();
 
         /// <summary>
         /// Add script element
@@ -64,7 +68,8 @@ namespace Nop.Web.Framework.UI
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
         /// <param name="isAsync">A value indicating whether to add an attribute "async" or not for js files</param>
-        void AddScriptParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync);
+        Task AddScriptPartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync);
+
         /// <summary>
         /// Append script element
         /// </summary>
@@ -73,33 +78,36 @@ namespace Nop.Web.Framework.UI
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
         /// <param name="isAsync">A value indicating whether to add an attribute "async" or not for js files</param>
-        void AppendScriptParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync);
+        Task AppendScriptPartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync);
+
         /// <summary>
         /// Generate all script parts
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <param name="bundleFiles">A value indicating whether to bundle script elements</param>
         /// <returns>Generated string</returns>
-        string GenerateScripts(ResourceLocation location, bool? bundleFiles = null);
+        Task<string> GenerateScriptsAsync(ResourceLocation location, bool? bundleFiles = null);
 
         /// <summary>
         /// Add inline script element
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <param name="script">Script</param>
-        void AddInlineScriptParts(ResourceLocation location, string script);
+        Task AddInlineScriptPartsAsync(ResourceLocation location, string script);
+
         /// <summary>
         /// Append inline script element
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <param name="script">Script</param>
-        void AppendInlineScriptParts(ResourceLocation location, string script);
+        Task AppendInlineScriptPartsAsync(ResourceLocation location, string script);
+
         /// <summary>
         /// Generate all inline script parts
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <returns>Generated string</returns>
-        string GenerateInlineScripts(ResourceLocation location);
+        Task<string> GenerateInlineScriptsAsync(ResourceLocation location);
 
         /// <summary>
         /// Add CSS element
@@ -108,7 +116,8 @@ namespace Nop.Web.Framework.UI
         /// <param name="src">Script path (minified version)</param>
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
-        void AddCssFileParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false);
+        Task AddCssFilePartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false);
+
         /// <summary>
         /// Append CSS element
         /// </summary>
@@ -116,61 +125,69 @@ namespace Nop.Web.Framework.UI
         /// <param name="src">Script path (minified version)</param>
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
-        void AppendCssFileParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false);
+        Task AppendCssFilePartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false);
+
         /// <summary>
         /// Generate all CSS parts
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <param name="bundleFiles">A value indicating whether to bundle script elements</param>
         /// <returns>Generated string</returns>
-        string GenerateCssFiles(ResourceLocation location, bool? bundleFiles = null);
+        Task<string> GenerateCssFilesAsync(ResourceLocation location, bool? bundleFiles = null);
+
         /// <summary>
         /// Add canonical URL element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Canonical URL part</param>
-        void AddCanonicalUrlParts(string part);
+        Task AddCanonicalUrlPartsAsync(string part);
+
         /// <summary>
         /// Append canonical URL element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Canonical URL part</param>
-        void AppendCanonicalUrlParts(string part);
+        Task AppendCanonicalUrlPartsAsync(string part);
+
         /// <summary>
         /// Generate all canonical URL parts
         /// </summary>
         /// <returns>Generated string</returns>
-        string GenerateCanonicalUrls();
+        Task<string> GenerateCanonicalUrlsAsync();
 
         /// <summary>
         /// Add any custom element to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
-        void AddHeadCustomParts(string part);
+        Task AddHeadCustomParts(string part);
+
         /// <summary>
         /// Append any custom element to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
-        void AppendHeadCustomParts(string part);
+        Task AppendHeadCustomPartsAsync(string part);
+
         /// <summary>
         /// Generate all custom elements
         /// </summary>
         /// <returns>Generated string</returns>
-        string GenerateHeadCustom();
+        Task<string> GenerateHeadCustomAsync();
 
         /// <summary>
         /// Add CSS class to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">CSS class</param>
-        void AddPageCssClassParts(string part);
+        Task AddPageCssClassPartsAsync(string part);
+
         /// <summary>
         /// Append CSS class to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">CSS class</param>
-        void AppendPageCssClassParts(string part);
+        Task AppendPageCssClassPartsAsync(string part);
+
         /// <summary>
         /// Generate all title parts
         /// </summary>
         /// <returns>Generated string</returns>
-        string GeneratePageCssClasses();
+        Task<string> GeneratePageCssClassesAsync();
 
         /// <summary>
         /// Specify "edit page" URL
@@ -193,33 +210,5 @@ namespace Nop.Web.Framework.UI
         /// </summary>
         /// <returns>System name</returns>
         string GetActiveMenuItemSystemName();
-
-        /// <summary>
-        /// Generate all title parts
-        /// </summary>
-        /// <param name="addDefaultTitle">A value indicating whether to insert a default title</param>
-        /// <returns>
-        /// A task that represents asynchronous operation
-        /// The task result contains the title parts
-        /// </returns>
-        Task<string> GenerateTitleAsync(bool addDefaultTitle);
-
-        /// <summary>
-        /// Generate all description parts
-        /// </summary>
-        /// <returns>
-        /// A task that represents asynchronous operation
-        /// The task result contains all description parts
-        /// </returns>
-        Task<string> GenerateMetaDescriptionAsync();
-
-        /// <summary>
-        /// Generate all keyword parts
-        /// </summary>
-        /// <returns>
-        /// A task that represents asynchronous operation
-        /// The task result contains all keyword parts
-        /// </returns>
-        Task<string> GenerateMetaKeywordsAsync();
     }
 }

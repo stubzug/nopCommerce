@@ -19,7 +19,7 @@ namespace Nop.Web.Framework.UI
         public static void AddTitleParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder  = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddTitleParts(part);
+            pageHeadBuilder.AddTitlePartsAsync(part);
         }
         /// <summary>
         /// Append title element to the <![CDATA[<head>]]>
@@ -29,7 +29,7 @@ namespace Nop.Web.Framework.UI
         public static void AppendTitleParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder  = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendTitleParts(part);
+            pageHeadBuilder.AppendTitlePartsAsync(part);
         }
         /// <summary>
         /// Generate all title parts
@@ -42,7 +42,7 @@ namespace Nop.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendTitleParts(part);
-            return new HtmlString(html.Encode(pageHeadBuilder.GenerateTitle(addDefaultTitle)));
+            return new HtmlString(html.Encode(pageHeadBuilder.GenerateTitleAsync(addDefaultTitle)));
         }
 
 
@@ -54,7 +54,7 @@ namespace Nop.Web.Framework.UI
         public static void AddMetaDescriptionParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddMetaDescriptionParts(part);
+            pageHeadBuilder.AddMetaDescriptionPartsAsync(part);
         }
         /// <summary>
         /// Append meta description element to the <![CDATA[<head>]]>
@@ -64,7 +64,7 @@ namespace Nop.Web.Framework.UI
         public static void AppendMetaDescriptionParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendMetaDescriptionParts(part);
+            pageHeadBuilder.AppendMetaDescriptionPartsAsync(part);
         }
         /// <summary>
         /// Generate all description parts
@@ -76,7 +76,7 @@ namespace Nop.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendMetaDescriptionParts(part);
-            return new HtmlString(html.Encode(pageHeadBuilder.GenerateMetaDescription()));
+            return new HtmlString(html.Encode(pageHeadBuilder.GenerateMetaDescriptionAsync()));
         }
 
 
@@ -88,7 +88,7 @@ namespace Nop.Web.Framework.UI
         public static void AddMetaKeywordParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddMetaKeywordParts(part);
+            pageHeadBuilder.AddMetaKeywordPartsAsync(part);
         }
         /// <summary>
         /// Append meta keyword element to the <![CDATA[<head>]]>
@@ -98,7 +98,7 @@ namespace Nop.Web.Framework.UI
         public static void AppendMetaKeywordParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendMetaKeywordParts(part);
+            pageHeadBuilder.AppendMetaKeywordPartsAsync(part);
         }
         /// <summary>
         /// Generate all keyword parts
@@ -110,7 +110,7 @@ namespace Nop.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendMetaKeywordParts(part);
-            return new HtmlString(html.Encode(pageHeadBuilder.GenerateMetaKeywords()));
+            return new HtmlString(html.Encode(pageHeadBuilder.GenerateMetaKeywordsAsync()));
         }
 
 
@@ -140,7 +140,7 @@ namespace Nop.Web.Framework.UI
             string src, string debugSrc = "", bool excludeFromBundle = false, bool isAsync = false)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddScriptParts(location, src, debugSrc, excludeFromBundle, isAsync);
+            pageHeadBuilder.AddScriptPartsAsync(location, src, debugSrc, excludeFromBundle, isAsync);
         }
         /// <summary>
         /// Append script element
@@ -168,7 +168,7 @@ namespace Nop.Web.Framework.UI
             string src, string debugSrc = "", bool excludeFromBundle = false, bool isAsync = false)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendScriptParts(location, src, debugSrc, excludeFromBundle, isAsync);
+            pageHeadBuilder.AppendScriptPartsAsync(location, src, debugSrc, excludeFromBundle, isAsync);
         }
         /// <summary>
         /// Generate all script parts
@@ -180,7 +180,7 @@ namespace Nop.Web.Framework.UI
         public static IHtmlContent NopScripts(this IHtmlHelper html, ResourceLocation location, bool? bundleFiles = null)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            return new HtmlString(pageHeadBuilder.GenerateScripts(location, bundleFiles));
+            return new HtmlString(pageHeadBuilder.GenerateScriptsAsync(location, bundleFiles).Result);
         }
 
 
@@ -196,7 +196,7 @@ namespace Nop.Web.Framework.UI
         public static void AddInlineScriptParts(this IHtmlHelper html, ResourceLocation location, string script)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddInlineScriptParts(location, script);
+            pageHeadBuilder.AddInlineScriptPartsAsync(location, script);
         }
         /// <summary>
         /// Append inline script element
@@ -207,7 +207,7 @@ namespace Nop.Web.Framework.UI
         public static void AppendInlineScriptParts(this IHtmlHelper html, ResourceLocation location, string script)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendInlineScriptParts(location, script);
+            pageHeadBuilder.AppendInlineScriptPartsAsync(location, script);
         }
         /// <summary>
         /// Generate all inline script parts
@@ -218,7 +218,7 @@ namespace Nop.Web.Framework.UI
         public static IHtmlContent NopInlineScripts(this IHtmlHelper html, ResourceLocation location)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            return new HtmlString(pageHeadBuilder.GenerateInlineScripts(location));
+            return new HtmlString(pageHeadBuilder.GenerateInlineScriptsAsync(location).Result);
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Nop.Web.Framework.UI
             string src, string debugSrc = "", bool excludeFromBundle = false)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddCssFileParts(location, src, debugSrc, excludeFromBundle);
+            pageHeadBuilder.AddCssFilePartsAsync(location, src, debugSrc, excludeFromBundle);
         }
         /// <summary>
         /// Append CSS element
@@ -269,7 +269,7 @@ namespace Nop.Web.Framework.UI
             string src, string debugSrc = "", bool excludeFromBundle = false)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendCssFileParts(location, src, debugSrc, excludeFromBundle);
+            pageHeadBuilder.AppendCssFilePartsAsync(location, src, debugSrc, excludeFromBundle);
         }
         /// <summary>
         /// Generate all CSS parts
@@ -281,7 +281,7 @@ namespace Nop.Web.Framework.UI
         public static IHtmlContent NopCssFiles(this IHtmlHelper html, ResourceLocation location, bool? bundleFiles = null)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            return new HtmlString(pageHeadBuilder.GenerateCssFiles(location, bundleFiles));
+            return new HtmlString(pageHeadBuilder.GenerateCssFilesAsync(location, bundleFiles).Result);
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace Nop.Web.Framework.UI
                 part = QueryHelpers.AddQueryString(part, queryParameters);
             }
 
-            pageHeadBuilder.AddCanonicalUrlParts(part);
+            pageHeadBuilder.AddCanonicalUrlPartsAsync(part);
         }
         /// <summary>
         /// Append canonical URL element to the <![CDATA[<head>]]>
@@ -312,7 +312,7 @@ namespace Nop.Web.Framework.UI
         public static void AppendCanonicalUrlParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendCanonicalUrlParts(part);
+            pageHeadBuilder.AppendCanonicalUrlPartsAsync(part);
         }
         /// <summary>
         /// Generate all canonical URL parts
@@ -324,7 +324,7 @@ namespace Nop.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendCanonicalUrlParts(part);
-            return new HtmlString(pageHeadBuilder.GenerateCanonicalUrls());
+            return new HtmlString(pageHeadBuilder.GenerateCanonicalUrlsAsync().Result);
         }
 
 
@@ -346,7 +346,7 @@ namespace Nop.Web.Framework.UI
         public static void AppendHeadCustomParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendHeadCustomParts(part);
+            pageHeadBuilder.AppendHeadCustomPartsAsync(part);
         }
         /// <summary>
         /// Generate all custom elements
@@ -356,7 +356,7 @@ namespace Nop.Web.Framework.UI
         public static IHtmlContent NopHeadCustom(this IHtmlHelper html)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            return new HtmlString(pageHeadBuilder.GenerateHeadCustom());
+            return new HtmlString(pageHeadBuilder.GenerateHeadCustomAsync().Result);
         }
 
 
@@ -378,7 +378,7 @@ namespace Nop.Web.Framework.UI
         public static void AppendPageCssClassParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AppendPageCssClassParts(part);
+            pageHeadBuilder.AppendPageCssClassPartsAsync(part);
         }
         /// <summary>
         /// Generate all title parts
@@ -391,7 +391,7 @@ namespace Nop.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendPageCssClassParts(part);
-            var classes = pageHeadBuilder.GeneratePageCssClasses();
+            var classes = pageHeadBuilder.GeneratePageCssClassesAsync();
 
             if (string.IsNullOrEmpty(classes))
                 return null;

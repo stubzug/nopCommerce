@@ -132,30 +132,34 @@ namespace Nop.Web.Framework.UI
         /// Add title element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Title part</param>
-        public virtual void AddTitleParts(string part)
+        public virtual Task AddTitlePartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _titleParts.Add(part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Append title element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Title part</param>
-        public virtual void AppendTitleParts(string part)
+        public virtual Task AppendTitlePartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _titleParts.Insert(0, part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Generate all title parts
         /// </summary>
         /// <param name="addDefaultTitle">A value indicating whether to insert a default title</param>
         /// <returns>Generated string</returns>
-        public virtual string GenerateTitle(bool addDefaultTitle)
+        public virtual Task<string> GenerateTitleAsync(bool addDefaultTitle)
         {
             var result = "";
             var specificTitle = string.Join(_seoSettings.PageTitleSeparator, _titleParts.AsEnumerable().Reverse().ToArray());
@@ -191,73 +195,81 @@ namespace Nop.Web.Framework.UI
                 //store name only
                 result = _seoSettings.DefaultTitle;
             }
-            return result;
+            return Task.FromResult(result);
         }
 
         /// <summary>
         /// Add meta description element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta description part</param>
-        public virtual void AddMetaDescriptionParts(string part)
+        public virtual Task AddMetaDescriptionPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _metaDescriptionParts.Add(part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Append meta description element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta description part</param>
-        public virtual void AppendMetaDescriptionParts(string part)
+        public virtual Task AppendMetaDescriptionPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _metaDescriptionParts.Insert(0, part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Generate all description parts
         /// </summary>
         /// <returns>Generated string</returns>
-        public virtual string GenerateMetaDescription()
+        public virtual Task<string> GenerateMetaDescriptionAsync()
         {
             var metaDescription = string.Join(", ", _metaDescriptionParts.AsEnumerable().Reverse().ToArray());
             var result = !string.IsNullOrEmpty(metaDescription) ? metaDescription : _seoSettings.DefaultMetaDescription;
-            return result;
+            return Task.FromResult(result);
         }
 
         /// <summary>
         /// Add meta keyword element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta keyword part</param>
-        public virtual void AddMetaKeywordParts(string part)
+        public virtual Task AddMetaKeywordPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _metaKeywordParts.Add(part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Append meta keyword element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Meta keyword part</param>
-        public virtual void AppendMetaKeywordParts(string part)
+        public virtual Task AppendMetaKeywordPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _metaKeywordParts.Insert(0, part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Generate all keyword parts
         /// </summary>
         /// <returns>Generated string</returns>
-        public virtual string GenerateMetaKeywords()
+        public virtual Task<string> GenerateMetaKeywordsAsync()
         {
             var metaKeyword = string.Join(", ", _metaKeywordParts.AsEnumerable().Reverse().ToArray());
             var result = !string.IsNullOrEmpty(metaKeyword) ? metaKeyword : _seoSettings.DefaultMetaKeywords;
-            return result;
+            return Task.FromResult(result);
         }
 
         /// <summary>
@@ -268,13 +280,13 @@ namespace Nop.Web.Framework.UI
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
         /// <param name="isAsync">A value indicating whether to add an attribute "async" or not for js files</param>
-        public virtual void AddScriptParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync)
+        public virtual Task AddScriptPartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync)
         {
             if (!_scriptParts.ContainsKey(location))
                 _scriptParts.Add(location, new List<ScriptReferenceMeta>());
 
             if (string.IsNullOrEmpty(src))
-                return;
+                return Task.CompletedTask;
 
             if (string.IsNullOrEmpty(debugSrc))
                 debugSrc = src;
@@ -286,7 +298,10 @@ namespace Nop.Web.Framework.UI
                 Src = src,
                 DebugSrc = debugSrc
             });
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Append script element
         /// </summary>
@@ -295,13 +310,13 @@ namespace Nop.Web.Framework.UI
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
         /// <param name="isAsync">A value indicating whether to add an attribute "async" or not for js files</param>
-        public virtual void AppendScriptParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync)
+        public virtual Task AppendScriptPartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle, bool isAsync)
         {
             if (!_scriptParts.ContainsKey(location))
                 _scriptParts.Add(location, new List<ScriptReferenceMeta>());
 
             if (string.IsNullOrEmpty(src))
-                return;
+                return Task.CompletedTask;
 
             if (string.IsNullOrEmpty(debugSrc))
                 debugSrc = src;
@@ -313,6 +328,8 @@ namespace Nop.Web.Framework.UI
                 Src = src,
                 DebugSrc = debugSrc
             });
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Generate all script parts
@@ -320,7 +337,7 @@ namespace Nop.Web.Framework.UI
         /// <param name="location">A location of the script element</param>
         /// <param name="bundleFiles">A value indicating whether to bundle script elements</param>
         /// <returns>Generated string</returns>
-        public virtual string GenerateScripts(ResourceLocation location, bool? bundleFiles = null)
+        public virtual async Task<string> GenerateScriptsAsync(ResourceLocation location, bool? bundleFiles = null)
         {
             if (!_scriptParts.ContainsKey(location) || _scriptParts[location] == null)
                 return "";
@@ -388,7 +405,7 @@ namespace Nop.Web.Framework.UI
                         CacheTime = _appSettings.CacheConfig.BundledFilesCacheTime
                     };
 
-                    var shouldRebuild = _staticCacheManager.GetAsync(_staticCacheManager.PrepareKey(cacheKey), () => true).Result;
+                    var shouldRebuild = await _staticCacheManager.GetAsync(_staticCacheManager.PrepareKey(cacheKey), () => true);
 
                     if (shouldRebuild)
                     {
@@ -401,7 +418,7 @@ namespace Nop.Web.Framework.UI
                             _processor.Process(configFilePath, new List<Bundle> { bundle });
                         }
 
-                        _staticCacheManager.SetAsync(cacheKey, false);
+                        await _staticCacheManager.SetAsync(cacheKey, false);
                     }
 
                     //render
@@ -438,49 +455,55 @@ namespace Nop.Web.Framework.UI
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <param name="script">Script</param>
-        public virtual void AddInlineScriptParts(ResourceLocation location, string script)
+        public virtual Task AddInlineScriptPartsAsync(ResourceLocation location, string script)
         {
             if (!_inlineScriptParts.ContainsKey(location))
                 _inlineScriptParts.Add(location, new List<string>());
 
             if (string.IsNullOrEmpty(script))
-                return;
+                return Task.CompletedTask;
 
             if (_inlineScriptParts[location].Contains(script))
-                return;
+                return Task.CompletedTask;
 
             _inlineScriptParts[location].Add(script);
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Append inline script element
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <param name="script">Script</param>
-        public virtual void AppendInlineScriptParts(ResourceLocation location, string script)
+        public virtual Task AppendInlineScriptPartsAsync(ResourceLocation location, string script)
         {
             if (!_inlineScriptParts.ContainsKey(location))
                 _inlineScriptParts.Add(location, new List<string>());
 
             if (string.IsNullOrEmpty(script))
-                return;
+                return Task.CompletedTask;
 
             if (_inlineScriptParts[location].Contains(script))
-                return;
+                return Task.CompletedTask;
 
             _inlineScriptParts[location].Insert(0, script);
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Generate all inline script parts
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <returns>Generated string</returns>
-        public virtual string GenerateInlineScripts(ResourceLocation location)
+        public virtual Task<string> GenerateInlineScriptsAsync(ResourceLocation location)
         {
             if (!_inlineScriptParts.ContainsKey(location) || _inlineScriptParts[location] == null)
-                return "";
+                return Task.FromResult("");
 
             if (!_inlineScriptParts.Any())
-                return "";
+                return Task.FromResult("");
 
             var result = new StringBuilder();
             foreach (var item in _inlineScriptParts[location])
@@ -488,7 +511,7 @@ namespace Nop.Web.Framework.UI
                 result.Append(item);
                 result.Append(Environment.NewLine);
             }
-            return result.ToString();
+            return Task.FromResult(result.ToString());
         }
 
         /// <summary>
@@ -498,13 +521,13 @@ namespace Nop.Web.Framework.UI
         /// <param name="src">Script path (minified version)</param>
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
-        public virtual void AddCssFileParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false)
+        public virtual Task AddCssFilePartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false)
         {
             if (!_cssParts.ContainsKey(location))
                 _cssParts.Add(location, new List<CssReferenceMeta>());
 
             if (string.IsNullOrEmpty(src))
-                return;
+                return Task.CompletedTask;
 
             if (string.IsNullOrEmpty(debugSrc))
                 debugSrc = src;
@@ -515,7 +538,10 @@ namespace Nop.Web.Framework.UI
                 Src = src,
                 DebugSrc = debugSrc
             });
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Append CSS element
         /// </summary>
@@ -523,13 +549,13 @@ namespace Nop.Web.Framework.UI
         /// <param name="src">Script path (minified version)</param>
         /// <param name="debugSrc">Script path (full debug version). If empty, then minified version will be used</param>
         /// <param name="excludeFromBundle">A value indicating whether to exclude this script from bundling</param>
-        public virtual void AppendCssFileParts(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false)
+        public virtual Task AppendCssFilePartsAsync(ResourceLocation location, string src, string debugSrc, bool excludeFromBundle = false)
         {
             if (!_cssParts.ContainsKey(location))
                 _cssParts.Add(location, new List<CssReferenceMeta>());
 
             if (string.IsNullOrEmpty(src))
-                return;
+                return Task.CompletedTask;
 
             if (string.IsNullOrEmpty(debugSrc))
                 debugSrc = src;
@@ -540,14 +566,17 @@ namespace Nop.Web.Framework.UI
                 Src = src,
                 DebugSrc = debugSrc
             });
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Generate all CSS parts
         /// </summary>
         /// <param name="location">A location of the script element</param>
         /// <param name="bundleFiles">A value indicating whether to bundle script elements</param>
         /// <returns>Generated string</returns>
-        public virtual string GenerateCssFiles(ResourceLocation location, bool? bundleFiles = null)
+        public virtual async Task<string> GenerateCssFilesAsync(ResourceLocation location, bool? bundleFiles = null)
         {
             if (!_cssParts.ContainsKey(location) || _cssParts[location] == null)
                 return "";
@@ -618,7 +647,7 @@ namespace Nop.Web.Framework.UI
                         CacheTime = _appSettings.CacheConfig.BundledFilesCacheTime
                     };
 
-                    var shouldRebuild = _staticCacheManager.GetAsync(_staticCacheManager.PrepareKey(cacheKey), () => true).Result;
+                    var shouldRebuild = await _staticCacheManager.GetAsync(_staticCacheManager.PrepareKey(cacheKey), () => true);
 
                     if (shouldRebuild)
                     {
@@ -631,7 +660,7 @@ namespace Nop.Web.Framework.UI
                             _processor.Process(configFilePath, new List<Bundle> { bundle });
                         }
 
-                        _staticCacheManager.SetAsync(cacheKey, false);
+                        await _staticCacheManager.SetAsync(cacheKey, false);
                     }
 
                     //render
@@ -667,29 +696,35 @@ namespace Nop.Web.Framework.UI
         /// Add canonical URL element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Canonical URL part</param>
-        public virtual void AddCanonicalUrlParts(string part)
+        public virtual Task AddCanonicalUrlPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _canonicalUrlParts.Add(part);
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Append canonical URL element to the <![CDATA[<head>]]>
         /// </summary>
         /// <param name="part">Canonical URL part</param>
-        public virtual void AppendCanonicalUrlParts(string part)
+        public virtual Task AppendCanonicalUrlPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _canonicalUrlParts.Insert(0, part);
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Generate all canonical URL parts
         /// </summary>
         /// <returns>Generated string</returns>
-        public virtual string GenerateCanonicalUrls()
+        public virtual Task<string> GenerateCanonicalUrlsAsync()
         {
             var result = new StringBuilder();
             foreach (var canonicalUrl in _canonicalUrlParts)
@@ -697,39 +732,45 @@ namespace Nop.Web.Framework.UI
                 result.AppendFormat("<link rel=\"canonical\" href=\"{0}\" />", canonicalUrl);
                 result.Append(Environment.NewLine);
             }
-            return result.ToString();
+            return Task.FromResult(result.ToString());
         }
 
         /// <summary>
         /// Add any custom element to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
-        public virtual void AddHeadCustomParts(string part)
+        public virtual Task AddHeadCustomPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _headCustomParts.Add(part);
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Append any custom element to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">The entire element. For example, <![CDATA[<meta name="msvalidate.01" content="123121231231313123123" />]]></param>
-        public virtual void AppendHeadCustomParts(string part)
+        public virtual Task AppendHeadCustomPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _headCustomParts.Insert(0, part);
+
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Generate all custom elements
         /// </summary>
         /// <returns>Generated string</returns>
-        public virtual string GenerateHeadCustom()
+        public virtual async Task<string> GenerateHeadCustomAsync()
         {
             //use only distinct rows
-            var distinctParts = _headCustomParts.Distinct().ToList();
+            var distinctParts = await _headCustomParts.Distinct().ToListAsync();
             if (!distinctParts.Any())
                 return "";
 
@@ -746,23 +787,27 @@ namespace Nop.Web.Framework.UI
         /// Add CSS class to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">CSS class</param>
-        public virtual void AddPageCssClassParts(string part)
+        public virtual Task AddPageCssClassPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _pageCssClassParts.Add(part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Append CSS class to the <![CDATA[<head>]]> element
         /// </summary>
         /// <param name="part">CSS class</param>
-        public virtual void AppendPageCssClassParts(string part)
+        public virtual Task AppendPageCssClassPartsAsync(string part)
         {
             if (string.IsNullOrEmpty(part))
-                return;
+                return Task.CompletedTask;
 
             _pageCssClassParts.Insert(0, part);
+
+            return Task.CompletedTask;
         }
         /// <summary>
         /// Generate all title parts
@@ -806,43 +851,6 @@ namespace Nop.Web.Framework.UI
         public virtual string GetActiveMenuItemSystemName()
         {
             return _activeAdminMenuSystemName;
-        }
-
-        /// <summary>
-        /// Generate all title parts
-        /// </summary>
-        /// <param name="addDefaultTitle">A value indicating whether to insert a default title</param>
-        /// <returns>
-        /// A task that represents asynchronous operation
-        /// The task result contains the title parts
-        /// </returns>
-        public virtual Task<string> GenerateTitleAsync(bool addDefaultTitle)
-        {
-            return Task.FromResult(GenerateTitle(addDefaultTitle));
-        }
-
-        /// <summary>
-        /// Generate all description parts
-        /// </summary>
-        /// <returns>
-        /// A task that represents asynchronous operation
-        /// The task result contains all description parts
-        /// </returns>
-        public virtual Task<string> GenerateMetaDescriptionAsync()
-        {
-            return Task.FromResult(GenerateMetaDescription());
-        }
-
-        /// <summary>
-        /// Generate all keyword parts
-        /// </summary>
-        /// <returns>
-        /// A task that represents asynchronous operation
-        /// The task result contains all keyword parts
-        /// </returns>
-        public virtual Task<string> GenerateMetaKeywordsAsync()
-        {
-            return Task.FromResult(GenerateMetaKeywords());
         }
 
         #endregion

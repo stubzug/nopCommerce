@@ -336,7 +336,7 @@ namespace Nop.Web.Framework.UI
         public static void AddHeadCustomParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddHeadCustomParts(part);
+            pageHeadBuilder.AddHeadCustomPartsAsync(part);
         }
         /// <summary>
         /// Append any custom element to the <![CDATA[<head>]]> element
@@ -368,7 +368,7 @@ namespace Nop.Web.Framework.UI
         public static void AddPageCssClassParts(this IHtmlHelper html, string part)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.AddPageCssClassParts(part);
+            pageHeadBuilder.AddPageCssClassPartsAsync(part);
         }
         /// <summary>
         /// Append CSS class to the <![CDATA[<head>]]> element
@@ -391,7 +391,7 @@ namespace Nop.Web.Framework.UI
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
             html.AppendPageCssClassParts(part);
-            var classes = pageHeadBuilder.GeneratePageCssClassesAsync();
+            var classes = pageHeadBuilder.GeneratePageCssClassesAsync().Result;
 
             if (string.IsNullOrEmpty(classes))
                 return null;
@@ -409,7 +409,7 @@ namespace Nop.Web.Framework.UI
         public static void SetActiveMenuItemSystemName(this IHtmlHelper html, string systemName)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            pageHeadBuilder.SetActiveMenuItemSystemName(systemName);
+            pageHeadBuilder.SetActiveMenuItemSystemNameAsync(systemName);
         }
         /// <summary>
         /// Get system name of admin menu item that should be selected (expanded)
@@ -419,7 +419,7 @@ namespace Nop.Web.Framework.UI
         public static string GetActiveMenuItemSystemName(this IHtmlHelper html)
         {
             var pageHeadBuilder = EngineContext.Current.Resolve<IPageHeadBuilder>();
-            return pageHeadBuilder.GetActiveMenuItemSystemName();
+            return pageHeadBuilder.GetActiveMenuItemSystemNameAsync().Result;
         }
     }
 }

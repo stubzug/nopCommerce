@@ -295,11 +295,13 @@ namespace Nop.Plugin.Payments.PayPalCommerce.Services
                     parameters["disable-funding"] = settings.DisabledFunding;
                 if (!string.IsNullOrEmpty(settings.EnabledFunding))
                     parameters["enable-funding"] = settings.EnabledFunding;
+                if (widgetZone.Equals(PublicWidgetZones.OrderSummaryContentBefore) || widgetZone.Equals(PublicWidgetZones.ProductDetailsTop))
+                    parameters["components"] = "buttons,funding-eligibility";
                 var scriptUrl = QueryHelpers.AddQueryString(PayPalCommerceDefaults.ServiceScriptUrl, parameters);
 
-                var pageType = widgetZone == PublicWidgetZones.OrderSummaryContentBefore
+                var pageType = widgetZone.Equals(PublicWidgetZones.OrderSummaryContentBefore)
                     ? "cart"
-                    : (widgetZone == PublicWidgetZones.ProductDetailsTop
+                    : (widgetZone.Equals(PublicWidgetZones.ProductDetailsTop)
                     ? "product-details"
                     : "checkout");
 

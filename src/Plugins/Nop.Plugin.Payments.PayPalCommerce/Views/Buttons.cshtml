@@ -19,6 +19,7 @@ else
 <script asp-location="Footer">
     $(document).ready(function() {
         var paymentForm = paypal.Buttons({
+            fundingSource: paypal.FUNDING.PAYPAL,
             onClick: function (e, n) {
                 if ($('#checkout').length > 0) {
                     $('#checkout').click();

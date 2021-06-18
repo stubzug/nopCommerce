@@ -443,6 +443,8 @@ namespace Nop.Plugin.Payments.PayPalCommerce
                 StyleColor = "blue",
                 StyleShape = "rect",
                 StyleLabel = "paypal",
+                DisplayButtonsOnProductDetails = true,
+                DisplayButtonsOnShoppingCart = true,
                 RequestTimeout = PayPalCommerceDefaults.RequestTimeout
             });
 
@@ -501,7 +503,7 @@ namespace Nop.Plugin.Payments.PayPalCommerce
                 ["Plugins.Payments.PayPalCommerce.Onboarding.Process.Permission"] = "Permissions are granted",
                 ["Plugins.Payments.PayPalCommerce.Onboarding.Title"] = "Sign up for PayPal",
                 ["Plugins.Payments.PayPalCommerce.OrderId"] = "PayPal order ID",
-                ["Plugins.Payments.PayPalCommerce.Prominently"] = "PayPal Prominently",
+                ["Plugins.Payments.PayPalCommerce.Prominently"] = "Feature PayPal Prominently",
                 ["Plugins.Payments.PayPalCommerce.PaymentMethodDescription"] = "PayPal Checkout with using methods like Venmo, PayPal Credit, credit card payments",
                 ["Plugins.Payments.PayPalCommerce.RoundingWarning"] = "It looks like you have <a href=\"{0}\" target=\"_blank\">RoundPricesDuringCalculation</a> setting disabled. Keep in mind that this can lead to a discrepancy of the order total amount, as PayPal rounds to two decimals only.",
                 ["Plugins.Payments.PayPalCommerce.WebhookWarning"] = "Webhook was not created, so some functions may not work correctly (see details in the <a href=\"{0}\" target=\"_blank\">log</a>. Please ensure that your store is under SSL, PayPal service doesn't send requests to unsecured sites.)"

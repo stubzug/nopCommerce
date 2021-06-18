@@ -386,12 +386,12 @@ namespace Nop.Web.Framework.Infrastructure.Extensions
                 };
 
                 if (!string.IsNullOrEmpty(appSettings.HostingConfig.ForwardedForHeaderName))
-                        options.ForwardedForHeaderName = appSettings.HostingConfig.ForwardedForHeaderName;
+                    options.ForwardedForHeaderName = appSettings.HostingConfig.ForwardedForHeaderName;
 
                 if (!string.IsNullOrEmpty(appSettings.HostingConfig.ForwardedProtoHeaderName))
                     options.ForwardedProtoHeaderName = appSettings.HostingConfig.ForwardedProtoHeaderName;
 
-                if(!string.IsNullOrEmpty(appSettings.HostingConfig.KnownProxies))
+                if (!string.IsNullOrEmpty(appSettings.HostingConfig.KnownProxies))
                 {
                     foreach (var strIp in appSettings.HostingConfig.KnownProxies.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList())
                     {
@@ -399,7 +399,7 @@ namespace Nop.Web.Framework.Infrastructure.Extensions
                             options.KnownProxies.Add(ip);
                     }
 
-                    if(options.KnownProxies.Count > 1)
+                    if (options.KnownProxies.Count > 1)
                         options.ForwardLimit = null; //disable the limit, because KnownProxies is configured
                 }
 

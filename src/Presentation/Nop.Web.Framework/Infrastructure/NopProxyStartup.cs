@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.HttpOverrides;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nop.Core.Configuration;
 using Nop.Core.Infrastructure;
 using Nop.Web.Framework.Infrastructure.Extensions;
 
@@ -35,6 +30,6 @@ namespace Nop.Web.Framework.Infrastructure
         /// <summary>
         /// Gets order of this startup configuration implementation
         /// </summary>
-        public int Order => -1; // Routing should be loaded before calling other middleware
+        public int Order => -1; // Forwarded headers by HTTP proxy should be applied before calling other middleware.
     }
 }
